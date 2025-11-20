@@ -36,7 +36,7 @@ public class PiApplicationTests {
 
         FileUploadController controller = new FileUploadController(storageService);
 
-        
+
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
