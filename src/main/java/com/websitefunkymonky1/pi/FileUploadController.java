@@ -48,7 +48,6 @@ public class FileUploadController {
 
         if (file == null)
             return ResponseEntity.notFound().build();
-
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
