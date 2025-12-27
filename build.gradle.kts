@@ -29,7 +29,7 @@ dependencies {
     // Spring Data JPA für persistente User/Rollen
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
-    // PostgreSQL Driver
+   
     runtimeOnly("org.postgresql:postgresql:42.7.7")
 
     // H2 In-Memory Datenbank (für Tests / Upload-Projekt)
@@ -42,13 +42,12 @@ dependencies {
     // JWT Token Handling
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") // JSON Parser für JWT
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") 
 
     // Lombok (optional, sehr praktisch für Getter/Setter/Constructors)
     compileOnly("org.projectlombok:lombok:1.18.28")
     annotationProcessor("org.projectlombok:lombok:1.18.28")
 
-    // Tests
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
