@@ -32,6 +32,10 @@ dependencies {
     // PostgreSQL Driver
     runtimeOnly("org.postgresql:postgresql:42.7.7")
 
+    // H2 In-Memory Datenbank (für Tests / Upload-Projekt)
+    runtimeOnly("com.h2database:h2")
+
+
     // Flyway für Datenbank-Migrationen
     implementation("org.flywaydb:flyway-core:10.2.0")
 
