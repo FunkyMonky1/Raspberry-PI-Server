@@ -3,6 +3,7 @@ package com.cloudserver.pi;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import com.cloudserver.pi.model.User;
 import com.cloudserver.pi.uploadingfiles.FileUploadController;
 import com.cloudserver.pi.uploadingfiles.StorageFileNotFoundException;
 import com.cloudserver.pi.uploadingfiles.StorageService;
@@ -61,11 +62,14 @@ public class PiApplicationTests {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
                 "text/plain", "Spring Framework".getBytes());
 
+        User mockUser = new User("testuser");
+
         this.mvc.perform(multipart("/").file(multipartFile))
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location", "/"));
 
-        then(this.storageService).should().store(multipartFile);
+        
+        then(this.storageService).should().store(multipartFile,mockUser);
     }
 
     @Test

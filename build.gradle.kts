@@ -36,8 +36,7 @@ dependencies {
     runtimeOnly("com.h2database:h2")
 
 
-    // Flyway für Datenbank-Migrationen
-    implementation("org.flywaydb:flyway-core:10.2.0")
+    
 
     // JWT Token Handling
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
@@ -45,10 +44,11 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5") 
 
     // Lombok (optional, sehr praktisch für Getter/Setter/Constructors)
-    compileOnly("org.projectlombok:lombok:1.18.28")
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    runtimeOnly("com.mysql:mysql-connector-j")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

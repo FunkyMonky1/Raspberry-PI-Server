@@ -7,7 +7,7 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "upload-dir";
+    private String location = "/home/felixsteiner/Documents/server_files";
 
     public String getLocation() {
         return location;

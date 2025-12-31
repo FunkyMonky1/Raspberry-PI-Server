@@ -1,10 +1,13 @@
 package com.cloudserver.pi.uploadingfiles;
 import java.io.IOException;
 import java.util.stream.Collectors;
+
+import com.cloudserver.pi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,10 +56,11 @@ public class FileUploadController {
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,  
+                                   @AuthenticationPrincipal User currentUser,
                                    RedirectAttributes redirectAttributes) {
 
-        storageService.store(file);
+        storageService.store(file, currentUser);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 

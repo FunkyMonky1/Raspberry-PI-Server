@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
+import com.cloudserver.pi.model.FileMetadata;
+import com.cloudserver.pi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+    @Autowired
+    private FileMetadataRepository fileMetadataRepository;
 
     @Autowired
     public FileSystemStorageService(StorageProperties properties) {
@@ -32,7 +36,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, User currentUser) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
@@ -49,6 +53,14 @@ public class FileSystemStorageService implements StorageService {
                 Files.copy(inputStream, destinationFile,
                         StandardCopyOption.REPLACE_EXISTING);
             }
+            FileMetadata metadata = new FileMetadata();
+            metadata.setOriginalFilename(file.getOriginalFilename());
+            metadata.setStoredFilename(file.getOriginalFilename()); // oder UUID + Original
+            metadata.setPath(destinationFile.toString());
+            metadata.setSize(file.getSize());
+            metadata.setUser(currentUser);
+
+            fileMetadataRepository.save(metadata);
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
@@ -106,4 +118,5 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("Could not initialize storage", e);
         }
     }
+    
 }
