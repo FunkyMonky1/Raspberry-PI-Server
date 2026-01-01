@@ -19,3 +19,10 @@ CREATE TABLE file_metadata (
                                CONSTRAINT fk_file_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+ALTER TABLE file_metadata 
+ADD COLUMN ip_address varchar(45);
+/* 45 is more than enough for this shit IPv4 and IPv6
+*/
+
+
+

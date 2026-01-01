@@ -68,8 +68,9 @@ public class PiApplicationTests {
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location", "/"));
 
-        
-        then(this.storageService).should().store(multipartFile,mockUser);
+
+        String ipAddress = null;
+        then(this.storageService).should().store(multipartFile,mockUser, ipAddress);
     }
 
     @Test

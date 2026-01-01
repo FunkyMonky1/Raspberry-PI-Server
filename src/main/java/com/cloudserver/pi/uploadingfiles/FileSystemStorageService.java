@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
 import com.cloudserver.pi.model.FileMetadata;
@@ -36,7 +37,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file, User currentUser) {
+    public void store(MultipartFile file, User currentUser, String ipAddress) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
@@ -59,6 +60,8 @@ public class FileSystemStorageService implements StorageService {
             metadata.setPath(destinationFile.toString());
             metadata.setSize(file.getSize());
             metadata.setUser(currentUser);
+            metadata.setUploadDate(LocalDateTime.now());
+            metadata.setIpAddress(ipAddress);
 
             fileMetadataRepository.save(metadata);
         }

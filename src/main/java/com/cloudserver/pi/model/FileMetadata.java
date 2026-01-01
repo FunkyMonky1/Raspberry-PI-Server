@@ -19,6 +19,9 @@ public class FileMetadata {
     @Column(name = "original_filename")
     private String originalFilename;
 
+    @Column(name = "ip_address")
+    private String ipAddress;
+
     @Column(name = "stored_filename")
     private String storedFilename;
 

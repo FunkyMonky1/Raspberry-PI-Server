@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 import com.cloudserver.pi.model.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -58,9 +59,20 @@ public class FileUploadController {
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,  
                                    @AuthenticationPrincipal User currentUser,
+                                   HttpServletRequest request,
+
                                    RedirectAttributes redirectAttributes) {
 
-        storageService.store(file, currentUser);
+        String ipAddress = request.getHeader("X-Forwarded-For");
+
+        if (ipAddress == null || ipAddress.isBlank()) {
+            ipAddress = request.getRemoteAddr();
+        }
+        System.out.println("Controller " + ipAddress);
+
+
+
+        storageService.store(file, currentUser, ipAddress);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
