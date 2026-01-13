@@ -32,8 +32,9 @@ public class FileMetadata {
     @Column(name = "upload_date")
     private LocalDateTime uploadDate;
 
+    // Verknüpfung zum User
     @ManyToOne
-    @JoinColumn(name = "user_id") // Verknüpfung zum User
+    @JoinColumn(name = "user_id")
     private User user;
 
     
