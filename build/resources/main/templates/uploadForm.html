@@ -1,13 +1,26 @@
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="">
 <body>
 
+<!-- Display success/error message -->
 <div th:if="${message}">
     <h2 th:text="${message}"></h2>
 </div>
 
+<!-- File upload form with category -->
 <div>
     <form method="POST" enctype="multipart/form-data" action="/">
         <table>
+            <tr>
+                <td>Category:</td>
+                <td>
+                    <label>
+                        <select name="category">
+                            <option value="MATH">Math</option>
+                            <option value="ALDAT">ALDAT</option>
+                        </select>
+                    </label>
+                </td>
+            </tr>
             <tr>
                 <td>File to upload:</td>
                 <td><input type="file" name="file" /></td>
@@ -20,13 +33,17 @@
     </form>
 </div>
 
+<!-- List uploaded files -->
 <div>
     <ul>
         <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${file}"></a>
+            <a th:href="@{/files/download/{id}(id=${file.id})}"
+               th:text="${file.originalFilename}"></a>
+            (<span th:text="${file.category}"></span>)
         </li>
     </ul>
 </div>
 
 </body>
 </html>
+

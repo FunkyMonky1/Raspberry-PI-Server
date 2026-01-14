@@ -3,7 +3,9 @@ package com.cloudserver.pi;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import com.cloudserver.pi.model.FileCategory;
 import com.cloudserver.pi.model.User;
+import com.cloudserver.pi.uploadingfiles.FileMetadataRepository;
 import com.cloudserver.pi.uploadingfiles.FileUploadController;
 import com.cloudserver.pi.uploadingfiles.StorageFileNotFoundException;
 import com.cloudserver.pi.uploadingfiles.StorageService;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.mock.web.MockMultipartFile;
 
+import static com.cloudserver.pi.model.FileCategory.MATH;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,11 +37,12 @@ public class PiApplicationTests {
 
     @Mock
     private StorageService storageService;
+    private FileMetadataRepository fileMetadataRepository;
 
     @BeforeEach
     public void setup() {
 
-        FileUploadController controller = new FileUploadController(storageService);
+        FileUploadController controller = new FileUploadController(storageService,fileMetadataRepository);
 
 
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -70,12 +74,13 @@ public class PiApplicationTests {
 
 
         String ipAddress = null;
-        then(this.storageService).should().store(multipartFile,mockUser, ipAddress);
+        FileCategory category = null;
+        then(this.storageService).should().store(multipartFile,mockUser, ipAddress, category);
     }
 
     @Test
     public void should404WhenMissingFile() throws Exception {
-        given(this.storageService.loadAsResource("test.txt"))
+        given(this.storageService.loadAsResource("test.txt", MATH))
                 .willThrow(StorageFileNotFoundException.class);
 
         this.mvc.perform(get("/files/test.txt"))

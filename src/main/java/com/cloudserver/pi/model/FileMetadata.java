@@ -39,7 +39,7 @@ public class FileMetadata {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    // es darf nicht leer sein 
+    // es darf nicht leer sein
     private FileCategory category;
     // i want to make categories math etc.
 
