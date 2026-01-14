@@ -37,6 +37,12 @@ public class FileMetadata {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    // es darf nicht leer sein 
+    private FileCategory category;
+    // i want to make categories math etc.
+
     
     public FileMetadata() {
         this.uploadDate = LocalDateTime.now();
