@@ -12,7 +12,8 @@ description = "pi"
 // This is the correct place for the toolchain
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
+        languageVersion.set(JavaLanguageVersion.of(17))
+
     }
 }
 
