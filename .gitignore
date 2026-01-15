@@ -1,0 +1,24 @@
+# Gradle build folder
+/build/
+/.gradle/
+
+# Gradle wrapper files
+/gradlew
+/gradlew.bat
+
+# IntelliJ IDEA files
+/.idea/
+/*.iml
+
+# Compiled class files
+*.class
+
+# JARs
+/*.jar
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
