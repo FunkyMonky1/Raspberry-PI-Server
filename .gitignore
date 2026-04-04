@@ -19,3 +19,6 @@
 # OS files
 .DS_Store
 Thumbs.db
+
+# Local scripts
+set-java17.sh
