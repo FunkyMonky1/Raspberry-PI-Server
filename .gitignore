@@ -2,9 +2,6 @@
 /build/
 /.gradle/
 
-# Gradle wrapper files
-/gradlew
-/gradlew.bat
 
 # IntelliJ IDEA files
 /.idea/
