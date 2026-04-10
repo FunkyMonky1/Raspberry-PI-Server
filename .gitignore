@@ -1,6 +1,6 @@
 # Gradle build folder
-/build/
-/.gradle/
+build/
+.gradle/
 
 
 # IntelliJ IDEA files
@@ -22,3 +22,7 @@ Thumbs.db
 
 # Local scripts
 set-java17.sh
+
+#application-funkymonks.properties
+.env
+application-local.properties
