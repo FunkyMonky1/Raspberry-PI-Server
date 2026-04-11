@@ -2,7 +2,6 @@ package com.cloudserver.pi.uploadingfiles;
 
 import com.cloudserver.pi.model.FileCategory;
 import com.cloudserver.pi.model.FileMetadata;
-import com.cloudserver.pi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +33,7 @@ public class FileUploadController {
      * Show files grouped by category. Optional filter by category.
      */
     @GetMapping("/")
+    //gets the name of the Thymeleaf Template 
     public String listUploadedFiles(Model model,
                                     @RequestParam(required = false) String category) {
 
@@ -67,7 +67,7 @@ public class FileUploadController {
      */
     @PostMapping("/")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   @AuthenticationPrincipal User currentUser,
+                                   @AuthenticationPrincipal org.springframework.security.core.userdetails.User currentUser,
                                    @RequestParam("category") String category,
                                    HttpServletRequest request,
                                    RedirectAttributes redirectAttributes) {
@@ -88,7 +88,8 @@ public class FileUploadController {
         }
 
         // Store file
-        storageService.store(file, currentUser, ipAddress, catEnum);
+        String username = currentUser.getUsername();
+        storageService.store(file, username, ipAddress, catEnum);
 
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
@@ -116,7 +117,7 @@ public class FileUploadController {
      * Handle file-not-found exceptions
      */
     @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+    public ResponseEntity<Void> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
     }
 }

@@ -21,7 +21,7 @@ CREATE TABLE file_metadata (
 
 ALTER TABLE file_metadata 
 ADD COLUMN ip_address varchar(45);
-/* 45 is more than enough for this shit IPv4 and IPv6
+/* 45 is more than enough for this  IPv4 and IPv6
 */
 
 

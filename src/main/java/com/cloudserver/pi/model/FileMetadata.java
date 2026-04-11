@@ -32,10 +32,9 @@ public class FileMetadata {
     @Column(name = "upload_date")
     private LocalDateTime uploadDate;
 
-    
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
+    @Column(name = "uploaded_by")
+    private String uploadedBy;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

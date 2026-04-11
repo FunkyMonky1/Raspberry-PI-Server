@@ -2,12 +2,10 @@ package com.cloudserver.pi.uploadingfiles;
 
 import com.cloudserver.pi.model.FileCategory;
 import com.cloudserver.pi.model.FileMetadata;
-import com.cloudserver.pi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,7 +17,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -47,7 +44,7 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file, User currentUser, String ipAddress, FileCategory category) {
+    public void store(MultipartFile file, String username, String ipAddress, FileCategory category) {
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
@@ -79,7 +76,7 @@ public class FileSystemStorageService implements StorageService {
             metadata.setPath(destinationFile.toString());
             metadata.setCategory(category);
             metadata.setSize(file.getSize());
-            metadata.setUser(currentUser);
+            metadata.setUploadedBy(username);
             metadata.setUploadDate(LocalDateTime.now());
             metadata.setIpAddress(ipAddress);
 
@@ -89,23 +86,8 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("Failed to store file.", e);
         }
     }
-
-    @Override
-    public Stream<Path> loadAll() {
-        try {
-            // Include subfolders (categories)
-            return Files.walk(rootLocation, 2)
-                    .filter(path -> !path.equals(rootLocation))
-                    .map(rootLocation::relativize);
-        } catch (IOException e) {
-            throw new StorageException("Failed to read stored files", e);
-        }
-    }
-
-    @Override
-    public Path load(String filename) {
-        return rootLocation.resolve(filename);
-    }
+    
+    
 
     @Override
     public Resource loadAsResource(String storedFilename, FileCategory category) {
@@ -123,9 +105,5 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageFileNotFoundException("Could not read file: " + storedFilename, e);
         }
     }
-
-    @Override
-    public void deleteAll() {
-        FileSystemUtils.deleteRecursively(rootLocation.toFile());
-    }
+    
 }

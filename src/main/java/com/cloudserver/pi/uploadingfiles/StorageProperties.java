@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class StorageProperties {
 
     
-    private String location ="/home/funkymonk/server_files";
+    private String location ="./server_files";
 
 
     public String getLocation() {
@@ -16,3 +16,4 @@ public class StorageProperties {
         this.location = location;
     }
 }
+    
