@@ -10,8 +10,6 @@ import java.util.List;
 
 @Repository
 public interface FileMetadataRepository extends JpaRepository<FileMetadata, Long> {
-
-    // Optional: alle Dateien eines Users abrufen
-    List<FileMetadata> findAllByUser(User user);
+    
     List<FileMetadata> findByCategory(FileCategory category);
 }
