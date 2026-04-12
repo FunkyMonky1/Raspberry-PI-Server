@@ -2,7 +2,6 @@ package com.cloudserver.pi.uploadingfiles;
 
 import com.cloudserver.pi.model.FileCategory;
 import com.cloudserver.pi.model.FileMetadata;
-import com.cloudserver.pi.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
