@@ -24,8 +24,11 @@
                 <td>Category:</td>
                 <td>
                     <select name="category">
-                        <option value="MATH">Math</option>
-                        <option value="ALDAT">ALDAT</option>
+                        <option th:each="cat : ${categories}"
+                                th:value="${cat}"
+                                th:text="${cat}">
+                            
+                        </option>
                     </select>
                 </td>
             </tr>
