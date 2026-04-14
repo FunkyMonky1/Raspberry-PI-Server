@@ -92,15 +92,22 @@ public class FileUploadController {
         }
 
         String originalFilename = file.getOriginalFilename();
+        //+1 here means skipping the dot itself, "?" means if true,  ":" means else and substring() cuts out a piece I want
         String extension = originalFilename != null && originalFilename.contains(".")
                 ? originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase()
                 : "";
+        
 
         if (!ALLOWED_EXTENSIONS.contains(extension)) {
             redirectAttributes.addFlashAttribute("message",
                     "File type not allowed! Allowed types: " + ALLOWED_EXTENSIONS);
             return "redirect:/";
         }
+        /* 
+        if the extension is not allowed get a flash error message and 
+        redirect back to the homepage:User can try again
+        */
+        
         
         // Get user IP
         String ipAddress = request.getHeader("X-Forwarded-For");
