@@ -19,6 +19,14 @@ import java.util.List;
 @Controller
 public class FileUploadController {
 
+
+    // using this to allow specific file types
+    private static final List<String> ALLOWED_EXTENSIONS = List.of(
+            "pdf", "png", "jpg", "jpeg", "txt", "docx", "xlsx", "pptx", "zip"
+    );
+    
+    
+
     private final StorageService storageService;
     private final FileMetadataRepository fileMetadataRepository;
 
@@ -71,6 +79,8 @@ public class FileUploadController {
                                    @RequestParam("category") String category,
                                    HttpServletRequest request,
                                    RedirectAttributes redirectAttributes) {
+        
+        
 
         // Convert String to FileCategory enum
         FileCategory catEnum;
@@ -81,6 +91,17 @@ public class FileUploadController {
             return "redirect:/";
         }
 
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename != null && originalFilename.contains(".")
+                ? originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase()
+                : "";
+
+        if (!ALLOWED_EXTENSIONS.contains(extension)) {
+            redirectAttributes.addFlashAttribute("message",
+                    "File type not allowed! Allowed types: " + ALLOWED_EXTENSIONS);
+            return "redirect:/";
+        }
+        
         // Get user IP
         String ipAddress = request.getHeader("X-Forwarded-For");
         if (ipAddress == null || ipAddress.isBlank()) {
