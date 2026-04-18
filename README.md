@@ -3,10 +3,13 @@ Making my own Self-Hosted Cloud-Server where i upload files and pictures for Stu
 With this little Project i wanted to dip my toes into Java Spring Boot which i will learn in University.
 
 #Requirements:
-Java 17 - older Raspberry Pi's only support this version
+Java 17 -older Raspberry Pi's only support this version 
+
 MySQL -database for storing file metadata
+
 Gradle -build tool (or use the included ./gradlew wrapper)
-Raspberry Pi 
+
+Raspberry Pi -which one doesn't matter 
 
 #Local Setup:
 Clone the Repository
@@ -48,11 +51,13 @@ storage.location=/your/path/to/server_files
 #Run the Application:
 
 1.In Intellij:
--Open Edit Configurations
+-Open Edit Configurations and 
 Set Active profiles to local
 
 -send the Project as a -jar file your Raspberry Pi
+
 -make your Raspberry Pi headless and use it per SSH and run the jar File
+
 -Open the browser http://localhost:8088 and login with your credentials from the application-local.properties
 
 #Notes:
