@@ -12,16 +12,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest 
+//Spring injects a fake http client
 @AutoConfigureMockMvc
 class FileUploadControllerTest {
     
+    //this is a fake Http client , simulates a browser sending requests to the Server
     @Autowired
     private MockMvc mockMvc;
     
+    
     @Test
+    // simulates a logged in User without it the test would fail
     @WithMockUser(username= "felix", roles ="USER")
     void uploadAllowedFile_shouldSucceed() throws Exception{
         //Arrange
+        
+        //fake uploaded file 
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 "test.pdf",
@@ -29,12 +35,15 @@ class FileUploadControllerTest {
                 "test content".getBytes()
         );
         //Act
+        
+        //fake Post request to "/", 
         var result = mockMvc.perform(multipart("/")
                 .file(file)
                 .param("category", "MATH"));
         
         
         //Assert
+        //after a successful upload, get a status which is a redirect like 301, 302 etc.
         result.andExpect(status().is3xxRedirection())
                 .andExpect(flash().attribute("message",
                         "You successfully uploaded test.pdf!"));
