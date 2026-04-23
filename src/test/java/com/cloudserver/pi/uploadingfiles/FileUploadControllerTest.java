@@ -1,5 +1,6 @@
 package com.cloudserver.pi.uploadingfiles;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ class FileUploadControllerTest {
     
     
     @Test
+    @DisplayName("Successful upload with a  valid file")
     // simulates a logged in User without it the test would fail
     @WithMockUser(username= "felix", roles ="USER")
     void uploadAllowedFile_shouldSucceed() throws Exception{
@@ -47,14 +49,28 @@ class FileUploadControllerTest {
         result.andExpect(status().is3xxRedirection())
                 .andExpect(flash().attribute("message",
                         "You successfully uploaded test.pdf!"));
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    }
+
+    @Test
+    @DisplayName("Upload fails when a blocked extension is provided")
+    @WithMockUser(username = "felix", roles = "USER")
+    void uploadBlockedFile_shouldBeRejected() throws Exception {
+        // Arrange, create a file with a blocked extension
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "virus.exe",
+                "application/octet-stream",
+                "malicious content".getBytes()
+        );
+
+        // Act, tries to upload the blocked file
+        var result = mockMvc.perform(multipart("/")
+                .file(file)
+                .param("category", "MATH"));
+
+        // Assert, should redirect back with error message
+        result.andExpect(status().is3xxRedirection())
+                .andExpect(flash().attribute("message",
+                        "File type not allowed! Allowed types: [pdf, png, jpg, jpeg, txt, docx, xlsx, pptx, zip]"));
     }
 }
