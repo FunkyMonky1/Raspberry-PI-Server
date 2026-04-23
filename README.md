@@ -1,8 +1,8 @@
 # Raspberry-PI-Server
-Making my own Self-Hosted Cloud-Server where i upload files and pictures for Studies and have them organized by categories.
-With this little Project i wanted to dip my toes into Java Spring Boot which i will learn in University.
+A self-hosted personal cloud server built with Java Spring Boot, running on a Raspberry Pi. 
+Upload, organize, and download university materials by category — secured behind authentication.
 
-#Requirements:
+# Requirements:
 Java 17 -older Raspberry Pi's only support this version 
 
 MySQL -database for storing file metadata
@@ -11,7 +11,7 @@ Gradle -build tool (or use the included ./gradlew wrapper)
 
 Raspberry Pi -which one doesn't matter 
 
-#Local Setup:
+# Local Setup:
 Clone the Repository
 ```
 git clone https://github.com/yourusername/Raspberry-PI-Server.git
@@ -48,7 +48,7 @@ app.admin.password=YOUR_PASSWORD
 # Storage path — where uploaded files will be saved on your machine
 storage.location=/your/path/to/server_files
 ````
-#Run the Application:
+# Run the Application:
 
 1.In Intellij:
 -Open Edit Configurations and 
@@ -60,10 +60,23 @@ Set Active profiles to local
 
 -Open the browser http://localhost:8088 and login with your credentials from the application-local.properties
 
-#Notes:
+# Notes:
 The storage path must exist or the app will create it automatically on startup
 File metadata is stored in MySQL but the actual files are stored on the filesystem
 
+## Roadmap:
 
+### In Progress:
+- more Unit & integration tests with the help of Mockito 
+- Docker containerization + docker-compose
+
+### Planned:
+- Database-backed user management (replace InMemory auth)
+- Search files by username or date
+- Modern UI with Bootstrap/Tailwind
+- Mobile-optimized interface
+- File versioning
+- Delete files from the UI
+- CI/CD pipeline with GitHub Actions
 
 
