@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  
+  db:
+    image: mysql:8.0
+    container_name: cloud-server-db
+    restart: unless-stopped
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    
+    volumes:
+      - mysql_data:/var/lib/mysql
+    
+    command:
+      --default-authentication-plugin=mysql_native_password
+    
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD" ]
+      timeout: 10s
+      retries: 10
+  
+  app:
+    build: .
+    container_name: cloud-server-app
+    restart: unless-stopped
+    
+    ports:
+      - "8088:8088"
+    
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      STORAGE_LOCATION: /app/server_files
+    
+    volumes:
+      - server_files:/app/server_files
+    
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+  server_files:
