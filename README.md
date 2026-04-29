@@ -56,7 +56,7 @@ storage.location=/your/path/to/server_files
 -Open Edit Configurations and 
 Set Active profiles to local
 
--create a .env the project root with your own credentials:
+-create a .env file in the project root with your own credentials:
 ```
 DB_NAME=cloud_storage
 DB_USER=name
