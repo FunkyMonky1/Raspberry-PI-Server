@@ -11,6 +11,8 @@ Gradle -build tool (or use the included ./gradlew wrapper)
 
 Raspberry Pi -which one doesn't matter 
 
+Docker and Docker Compose installed
+
 # Local Setup:
 Clone the Repository
 ```
@@ -54,16 +56,24 @@ storage.location=/your/path/to/server_files
 -Open Edit Configurations and 
 Set Active profiles to local
 
--send the Project as a -jar file your Raspberry Pi
-
--make your Raspberry Pi headless and use it per SSH and run the jar File
-
--Open the browser http://localhost:8088 and login with your credentials from the application-local.properties
-
-# Notes:
-The storage path must exist or the app will create it automatically on startup
-File metadata is stored in MySQL but the actual files are stored on the filesystem
-
+-create a .env the project root with your own credentials:
+```
+DB_NAME=cloud_storage
+DB_USER=name
+DB_PASSWORD=your_mysql_password
+ADMIN_USER=felix
+ADMIN_PASSWORD=your_app_password
+```
+-Build and run the application:
+```
+docker-compose up --build
+http://localhost:8088
+```
+-Check where the file is uploaded
+```
+docker exec -it cloud-server-app sh
+ls -la /app/server_files
+```
 ## Roadmap:
 
 ### In Progress:
