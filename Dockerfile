@@ -2,7 +2,7 @@ FROM gradle:8.13-jdk17 AS builder
 
 WORKDIR /app
 
-COPY build.gradle.kts settings.gradle.kts gradle.properties ./
+COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
 
 RUN gradle dependencies --no-daemon || true
@@ -20,7 +20,10 @@ WORKDIR /app
 
 COPY --from=builder /app/app.jar app.jar
 
-RUN useradd -m appuser
+RUN useradd -m appuser \
+    && mkdir -p /app/server_files \
+    && chown -R appuser:appuser /app
+
 USER appuser
 
 EXPOSE 8088

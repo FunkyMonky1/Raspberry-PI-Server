@@ -1,19 +1,16 @@
 package com.cloudserver.pi.uploadingfiles;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@Setter
+@Getter
 @ConfigurationProperties("storage")
 public class StorageProperties {
 
     
-    private String location ="./server_files";
+    private String location;
 
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
 }
     
