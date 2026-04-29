@@ -78,7 +78,6 @@ ls -la /app/server_files
 
 ### In Progress:
 - more Unit & integration tests with the help of Mockito 
-- Docker containerization + docker-compose
 
 ### Planned:
 - Database-backed user management (replace InMemory auth)
