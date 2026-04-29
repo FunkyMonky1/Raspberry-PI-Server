@@ -74,6 +74,31 @@ http://localhost:8088
 docker exec -it cloud-server-app sh
 ls -la /app/server_files
 ```
+## Setup for the Raspberry PI:
+-Install Docker on the PI:
+````
+sudo apt update
+sudo apt install docker.io docker-compose
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+````
+-Clone the Repo:
+````
+cd ~
+git clone https://github.com/FunkyMonky1/Raspberry-PI-Server.git
+cd Raspberry-PI-Server
+````
+-Create .env
+-Build and run with Docker
+-5. Access from any device on the network:
+````
+hostname -I
+````
+Open in any browser on the same WiFi:
+````
+http://PI_IP:8088
+````
 ## Roadmap:
 
 ### In Progress:
