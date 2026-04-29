@@ -89,9 +89,9 @@ cd ~
 git clone https://github.com/FunkyMonky1/Raspberry-PI-Server.git
 cd Raspberry-PI-Server
 ````
--Create .env
--Build and run with Docker
--5. Access from any device on the network:
+-Create .env file,
+Build and run with Docker,
+Access from any device on the network:
 ````
 hostname -I
 ````
