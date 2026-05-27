@@ -22,16 +22,16 @@ import java.util.UUID;
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
+    private final FileMetadataRepository fileMetadataRepository;
 
     @Autowired
-    private FileMetadataRepository fileMetadataRepository;
-
-    @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
+    public FileSystemStorageService(StorageProperties properties,
+                                    FileMetadataRepository fileMetadataRepository) {
         if (properties.getLocation().trim().isEmpty()) {
             throw new StorageException("File upload location cannot be empty.");
         }
         this.rootLocation = Paths.get(properties.getLocation()).toAbsolutePath().normalize();
+        this.fileMetadataRepository = fileMetadataRepository;
     }
 
     @Override
