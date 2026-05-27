@@ -9,6 +9,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
@@ -44,9 +45,10 @@ class FileUploadControllerTest {
         //fake Post request to "/", 
         var result = mockMvc.perform(multipart("/")
                 .file(file)
-                .param("category", "MATH"));
-        
-        
+                .param("category", "MATH")
+                .with(csrf()));
+
+
         //Assert
         //after a successful upload, get a status which is a redirect like 301, 302 etc.
         result.andExpect(status().is3xxRedirection())
@@ -69,7 +71,8 @@ class FileUploadControllerTest {
         // Act, tries to upload the blocked file
         var result = mockMvc.perform(multipart("/")
                 .file(file)
-                .param("category", "MATH"));
+                .param("category", "MATH")
+                .with(csrf()));
 
         // Assert, should redirect back with error message
         result.andExpect(status().is3xxRedirection())

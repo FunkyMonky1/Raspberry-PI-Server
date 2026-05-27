@@ -41,7 +41,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)  // optional, für Test/Dev
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/upload/**").hasRole("USER")
                         .requestMatchers("/download/**").hasRole("USER")
