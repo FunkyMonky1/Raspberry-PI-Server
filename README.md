@@ -1,26 +1,26 @@
 # Raspberry-PI-Server
-A self-hosted personal cloud server built with Java Spring Boot, running on a Raspberry Pi. 
+A self-hosted personal cloud server built with Java Spring Boot, running on a Raspberry Pi.
 Upload, organize, and download university materials by category — secured behind authentication.
 
-# Requirements:
-Java 17 -older Raspberry Pi's only support this version 
+## Requirements
+- **Java 17** — older Raspberry Pis only support this version
+- **MySQL** — stores file metadata
+- **Gradle** — build tool (or use the included `./gradlew` wrapper)
+- **Raspberry Pi** — any model
 
-MySQL -database for storing file metadata
+---
 
-Gradle -build tool (or use the included ./gradlew wrapper)
+## Local Setup (without Docker)
 
-Raspberry Pi -which one doesn't matter 
-
-Docker and Docker Compose installed
-
-# Local Setup:
-Clone the Repository
-```
-git clone https://github.com/yourusername/Raspberry-PI-Server.git
+### 1. Clone the repository
+```bash
+git clone https://github.com/FunkyMonky1/Raspberry-PI-Server.git
 cd Raspberry-PI-Server
 ```
-Open MySQL terminal and run:
-````
+
+### 2. Set up the MySQL database
+Open a MySQL terminal and run:
+```sql
 CREATE DATABASE IF NOT EXISTS cloud_storage;
 USE cloud_storage;
 
@@ -35,82 +35,131 @@ CREATE TABLE IF NOT EXISTS file_metadata (
     ip_address VARCHAR(45),
     category VARCHAR(50) NOT NULL
 );
-````
-Create application-local.properties, which is gitignored and contains your personal credentials
-````
-# Database
-spring.datasource.url=jdbc:mysql://localhost:3306/cloud_storage
+```
+
+### 3. Create application-local.properties
+This file is gitignored — create it at `src/main/resources/application-local.properties`:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/cloud_storage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
 spring.datasource.username=YOUR_MYSQL_USERNAME
 spring.datasource.password=YOUR_MYSQL_PASSWORD
 
-# App login credentials
 app.admin.username=YOUR_USERNAME
 app.admin.password=YOUR_PASSWORD
 
-# Storage path — where uploaded files will be saved on your machine
-storage.location=/your/path/to/server_files
-````
-# Run the Application:
+storage.location=./server_files
+```
 
-1.In Intellij:
--Open Edit Configurations and 
-Set Active profiles to local
+### 4. Run the application
 
--create a .env file in the project root with your own credentials:
+**IntelliJ:**
+Run → Edit Configurations → Active profiles → set to `local`
+
+**Terminal:**
+```bash
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
-DB_NAME=cloud_storage
-DB_USER=name
-DB_PASSWORD=your_mysql_password
-ADMIN_USER=felix
-ADMIN_PASSWORD=your_app_password
+
+### 5. Open in browser
 ```
--Build and run the application:
-```
-docker-compose up --build
 http://localhost:8088
 ```
--Check where the file is uploaded
+Log in with the credentials from your `application-local.properties`.
+
+---
+
+## Docker Setup (local)
+
+### 1. Create your .env file
+Copy the example and fill in your values:
+```bash
+cp .env.example .env
 ```
+
+### 2. Start with Docker Compose
+```bash
+docker-compose up --build
+```
+
+### 3. Open in browser
+```
+http://localhost:8088
+```
+
+### Check uploaded files inside the container
+```bash
 docker exec -it cloud-server-app sh
 ls -la /app/server_files
 ```
-## Setup for the Raspberry PI:
--Install Docker on the PI:
-````
+
+---
+
+## Deploying to Raspberry Pi (with Docker)
+
+### 1. Install Docker on the Pi
+```bash
 sudo apt update
 sudo apt install docker.io docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker $USER
-````
--Clone the Repo:
-````
+```
+
+### 2. Clone the repo on the Pi
+```bash
 cd ~
 git clone https://github.com/FunkyMonky1/Raspberry-PI-Server.git
 cd Raspberry-PI-Server
-````
--Create .env file,
-Build and run with Docker,
-Access from any device on the network:
-````
+```
+
+### 3. Create .env and start
+```bash
+cp .env.example .env
+# Edit .env with your credentials
+docker-compose up --build
+```
+
+### 4. Access from any device on the network
+Find the Pi's IP:
+```bash
 hostname -I
-````
-Open in any browser on the same WiFi:
-````
+```
+Then open in any browser on the same WiFi:
+```
 http://PI_IP:8088
-````
-## Roadmap:
+```
+
+---
+
+## Note for developers using Java 21+
+
+If you have a newer JDK (e.g. Java 25) as your default but Java 17 installed alongside it, `gradle.properties` already configures the Gradle daemon to use Java 17 automatically. No manual setup needed.
+
+---
+
+## Notes
+- Uploaded files are stored on the filesystem; only metadata goes into MySQL.
+- The storage path is created automatically on startup if it does not exist.
+
+---
+
+## Roadmap
+
+### Done:
+- File upload with category organization
+- File type validation (blocks dangerous extensions)
+- IP address logging per upload
+- Spring Security login
+- Docker containerization with docker-compose
 
 ### In Progress:
-- more Unit & integration tests with the help of Mockito 
+- More unit & integration tests with Mockito
 
 ### Planned:
-- Database-backed user management (replace InMemory auth)
+- Database-backed user management (replace in-memory auth)
 - Search files by username or date
-- Modern UI with Bootstrap/Tailwind
+- Delete files from the UI
+- Modern UI with Bootstrap or Tailwind
 - Mobile-optimized interface
 - File versioning
-- Delete files from the UI
 - CI/CD pipeline with GitHub Actions
-
-
