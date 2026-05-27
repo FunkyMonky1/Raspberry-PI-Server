@@ -7,9 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest 
@@ -73,5 +76,14 @@ class FileUploadControllerTest {
                 .andExpect(flash().attribute("message",
                         "File type not allowed! Allowed types: [pdf, png, jpg, jpeg, txt, docx, xlsx, pptx, zip]"));
     }
-    
+
+    @Test
+    @DisplayName("Unauthenticated request to homepage redirects to login")
+    @WithAnonymousUser
+    void unauthenticatedAccess_shouldRedirectToLogin() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
 }
