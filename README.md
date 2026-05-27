@@ -145,21 +145,30 @@ If you have a newer JDK (e.g. Java 25) as your default but Java 17 installed alo
 
 ## Roadmap
 
-### Done:
+### Done
 - File upload with category organization
 - File type validation (blocks dangerous extensions)
 - IP address logging per upload
 - Spring Security login
 - Docker containerization with docker-compose
+- Unit & integration tests (Mockito + MockMvc)
+- CSRF protection
 
-### In Progress:
-- More unit & integration tests with Mockito
+### Next Up
+- Delete files from the UI (`DELETE /files/{id}` + button in template)
+- Sort / filter file list by category, date, or filename
+- Pagination for large file lists
+- File preview in browser for PDFs and images (instead of forcing download)
 
-### Planned:
-- Database-backed user management (replace in-memory auth)
-- Search files by username or date
-- Delete files from the UI
-- Modern UI with Bootstrap or Tailwind
+### Planned
+- Modern UI (Bootstrap or Tailwind)
 - Mobile-optimized interface
-- File versioning
+- Upload progress indicator for large files (up to 100 MB)
 - CI/CD pipeline with GitHub Actions
+
+### Longer Term
+- Database-backed user management (replace in-memory auth)
+- Rate limiting on the upload endpoint
+- HTTPS via nginx reverse proxy + Let's Encrypt (Pi deployment)
+- Search files by username or date
+- File versioning
