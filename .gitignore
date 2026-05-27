@@ -27,5 +27,8 @@ set-java17.sh
 .env
 application-local.properties
 
-#Pictures and images 
+#Pictures and images
 src/main/resources/static/background.jpg
+
+# Test artifacts
+test_server_files/
